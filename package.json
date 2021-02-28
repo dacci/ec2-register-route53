@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.0",
+    "@types/aws-lambda": "^8.0.0",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.0",
+    "@typescript-eslint/parser": "^4.0.0",
+    "aws-sdk": "2.804.0",
+    "esbuild": "0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-jest": "^24.0.0",
+    "jest": "^26.0.0",
+    "ts-jest": "^26.0.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.0"
+  }
+}
