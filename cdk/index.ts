@@ -14,7 +14,7 @@ const stack = new Stack(app, 'Stack', {
 
 const handler = new NodejsFunction(stack, 'Handler', {
   entry: 'src/index.ts',
-  runtime: Runtime.NODEJS_14_X,
+  runtime: Runtime.NODEJS_18_X,
   bundling: {
     minify: true,
     sourceMap: true,

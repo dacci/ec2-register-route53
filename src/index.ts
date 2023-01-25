@@ -1,6 +1,13 @@
-import { EC2, Route53 } from 'aws-sdk';
-import { Instance } from 'aws-sdk/clients/ec2';
-import { Changes, HostedZone, ResourceRecordSet } from 'aws-sdk/clients/route53';
+import { DescribeInstancesCommand, EC2Client, Instance } from '@aws-sdk/client-ec2';
+import {
+  Change,
+  ChangeResourceRecordSetsCommand,
+  GetHostedZoneCommand,
+  HostedZone,
+  ListResourceRecordSetsCommand,
+  ResourceRecordSet,
+  Route53Client
+} from '@aws-sdk/client-route-53';
 import punycode from 'punycode';
 
 const HOSTED_ZONE = 'HostedZone';
@@ -8,8 +15,8 @@ const HOST_NAME = 'HostName';
 const NAME = 'Name';
 const TTL = 300;
 
-export const ec2 = new EC2();
-export const route53 = new Route53();
+const ec2 = new EC2Client({});
+const route53 = new Route53Client({});
 
 function getTagValue(resource: Instance, key: string): string | undefined {
   if (!resource.Tags) return;
@@ -39,7 +46,7 @@ function anyOf<T>(...predicates: Predicate<T>[]): Predicate<T> {
   };
 }
 
-type Task = (instance: Instance, hostedZone: HostedZone) => Promise<Changes>;
+type Task = (instance: Instance, hostedZone: HostedZone) => Promise<Change[]>;
 
 export const register: Task = async (instance, hostedZone) => {
   const privateV4: string[] = [];
@@ -110,11 +117,10 @@ export const unregister: Task = async (instance, hostedZone) => {
   const fqdn = `${instance.InstanceId}.${hostedZone.Name}`;
 
   return route53
-    .listResourceRecordSets({
+    .send(new ListResourceRecordSetsCommand({
       HostedZoneId: hostedZone.Id,
-    })
-    .promise()
-    .then((data) => data.ResourceRecordSets)
+    }))
+    .then((data) => data.ResourceRecordSets || [])
     .then((sets) => sets.filter((set) => set.ResourceRecords))
     .then((sets) => sets.filter(anyOf(byName(fqdn), byValue(fqdn))))
     .then((sets) => sets.map((set) => ({
@@ -140,14 +146,13 @@ export async function handler(event: any): Promise<void> {
   }
 
   const instance = await ec2
-    .describeInstances({
+    .send(new DescribeInstancesCommand({
       InstanceIds: [event.detail['instance-id']],
       Filters: [{
         Name: 'tag-key',
         Values: [HOSTED_ZONE],
       }],
-    })
-    .promise()
+    }))
     .then((data) => data.Reservations?.flatMap((r) => r.Instances)[0]);
   if (!instance) {
     console.info('No maching instance.');
@@ -161,24 +166,22 @@ export async function handler(event: any): Promise<void> {
   }
 
   const hostedZone = await route53
-    .getHostedZone({ Id: zoneId })
-    .promise()
+    .send(new GetHostedZoneCommand({ Id: zoneId }))
     .then((data) => ({
       ...data.HostedZone,
       Id: zoneId,
     }));
 
-  const changes = await task(instance, hostedZone);
+  const changes = await task(instance, hostedZone as HostedZone);
   if (!changes.length) {
     console.info('No changes.');
     return;
   }
 
   await route53
-    .changeResourceRecordSets({
+    .send(new ChangeResourceRecordSetsCommand({
       HostedZoneId: zoneId,
       ChangeBatch: { Changes: changes },
-    })
-    .promise()
+    }))
     .then((data) => console.info(JSON.stringify(data)));
 }
