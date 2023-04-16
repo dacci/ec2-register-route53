@@ -4,11 +4,11 @@ import {
   GetHostedZoneCommand,
   HostedZone,
   ListResourceRecordSetsCommand,
-  Route53Client
+  Route53Client,
 } from '@aws-sdk/client-route-53';
 import { mockClient } from 'aws-sdk-client-mock';
 import 'aws-sdk-client-mock-jest';
-import { handler, register, unregister } from '../src';
+import { handler, register, unregister } from '../app';
 
 const ec2 = mockClient(EC2Client);
 const route53 = mockClient(Route53Client);
@@ -63,7 +63,7 @@ describe('Lambda handler', () => {
     await handler({
       detail: {
         'instance-id': 'i-dummy',
-        state: 'running',
+        'state': 'running',
       },
     });
 
@@ -115,7 +115,7 @@ describe('Lambda handler', () => {
     await handler({
       detail: {
         'instance-id': 'i-dummy',
-        state: 'stopped',
+        'state': 'stopped',
       },
     });
 
@@ -144,7 +144,7 @@ describe('Lambda handler', () => {
     await handler({
       detail: {
         'instance-id': 'i-dummy',
-        state: 'running',
+        'state': 'running',
       },
     });
 
@@ -170,7 +170,7 @@ describe('Lambda handler', () => {
     await handler({
       detail: {
         'instance-id': 'i-dummy',
-        state: 'stopped',
+        'state': 'stopped',
       },
     });
 
@@ -214,7 +214,7 @@ describe('Lambda handler', () => {
     await handler({
       detail: {
         'instance-id': 'i-dummy',
-        state: 'terminated',
+        'state': 'terminated',
       },
     });
 

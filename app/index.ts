@@ -24,6 +24,8 @@ function getTagValue(resource: Instance, key: string): string | undefined {
   for (const tag of resource.Tags) {
     if (tag.Key === key) return tag.Value;
   }
+
+  return undefined;
 }
 
 type Predicate<T> = (value: T) => boolean;
