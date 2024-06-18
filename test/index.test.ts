@@ -306,7 +306,7 @@ describe('unregister', () => {
             Type: 'CNAME',
             ResourceRecords: [
               {
-                Value: 'i-dummy.example.org.',
+                Value: 'i-dummy.example.org',
               },
             ],
           },

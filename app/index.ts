@@ -65,7 +65,7 @@ export const register: Task = async (instance, hostedZone) => {
     });
   });
 
-  const name = `${instance.InstanceId}.${hostedZone.Name}`;
+  const name = `${instance.InstanceId}.${hostedZone.Name}`.replace(/\.$/, '');
   const sets: ResourceRecordSet[] = [];
   const mapper = (Value: string) => ({ Value });
   if (hostedZone.Config?.PrivateZone) {
@@ -100,7 +100,7 @@ export const register: Task = async (instance, hostedZone) => {
     label = punycode.toASCII(label).replace(/[^!-~]/g, '_');
 
     sets.push({
-      Name: `${label}.${hostedZone.Name}.`,
+      Name: `${label}.${hostedZone.Name}`,
       Type: 'CNAME',
       ResourceRecords: [{ Value: name }],
     });
@@ -124,7 +124,7 @@ export const unregister: Task = async (instance, hostedZone) => {
     }))
     .then((data) => data.ResourceRecordSets || [])
     .then((sets) => sets.filter((set) => set.ResourceRecords))
-    .then((sets) => sets.filter(anyOf(byName(fqdn), byValue(fqdn))))
+    .then((sets) => sets.filter(anyOf(byName(fqdn), byValue(fqdn.replace(/\.$/, '')))))
     .then((sets) => sets.map((set) => ({
       Action: 'DELETE',
       ResourceRecordSet: set,
