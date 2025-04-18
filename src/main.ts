@@ -13,7 +13,7 @@ export class Stack extends cdk.Stack {
 
     const handler = new lambda_nodejs.NodejsFunction(this, 'Handler', {
       entry: 'app/index.ts',
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       bundling: {
         minify: true,
         sourceMap: true,
