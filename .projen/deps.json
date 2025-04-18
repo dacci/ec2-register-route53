@@ -1,27 +1,31 @@
 {
   "dependencies": [
     {
+      "name": "@stylistic/eslint-plugin",
+      "version": "^2",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },
     {
       "name": "@types/node",
-      "version": "^16",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
-      "version": "^5",
+      "version": "^8",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
-      "version": "^5",
+      "version": "^8",
       "type": "build"
     },
     {
       "name": "aws-cdk",
-      "version": "^2.83.1",
+      "version": "^2",
       "type": "build"
     },
     {
@@ -37,10 +41,6 @@
       "type": "build"
     },
     {
-      "name": "eslint-import-resolver-node",
-      "type": "build"
-    },
-    {
       "name": "eslint-import-resolver-typescript",
       "type": "build"
     },
@@ -50,7 +50,7 @@
     },
     {
       "name": "eslint",
-      "version": "^8",
+      "version": "^9",
       "type": "build"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "name": "jest-junit",
-      "version": "^15",
+      "version": "^16",
       "type": "build"
     },
     {
