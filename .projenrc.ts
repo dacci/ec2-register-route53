@@ -41,7 +41,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     `,
   },
 
-  cdkVersion: '2.83.1',
+  cdkVersion: '2.233.0',
   deps: [
     '@aws-sdk/client-ec2',
     '@aws-sdk/client-route-53',
