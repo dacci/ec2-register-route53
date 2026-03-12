@@ -2,6 +2,8 @@
   "files": [
     ".eslintrc.json",
     ".gitattributes",
+    ".github/workflows/deploy.yml",
+    ".github/workflows/merge-dependabot-pr.yml",
     ".gitignore",
     ".npmignore",
     ".projen/deps.json",

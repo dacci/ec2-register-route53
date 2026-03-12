@@ -4,6 +4,8 @@
 *.snap linguist-generated
 /.eslintrc.json linguist-generated linguist-language=JSON-with-Comments
 /.gitattributes linguist-generated
+/.github/workflows/deploy.yml linguist-generated
+/.github/workflows/merge-dependabot-pr.yml linguist-generated
 /.gitignore linguist-generated
 /.npmignore linguist-generated
 /.projen/** linguist-generated
