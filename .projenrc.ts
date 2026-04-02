@@ -69,35 +69,35 @@ deploy?.addJob('deploy', {
   steps: [
     {
       name: 'Checkout',
-      uses: 'actions/checkout@v6'
+      uses: 'actions/checkout@v6',
     },
     {
       name: 'Setup Node.js',
       uses: 'actions/setup-node@v6',
       with: {
         'node-version': 24,
-        cache: 'yarn'
-      }
+        'cache': 'yarn',
+      },
     },
     {
       name: 'Install dependencies',
-      run: 'yarn install'
+      run: 'yarn install',
     },
     {
       name: 'Run tests',
-      run: 'yarn test'
+      run: 'yarn test',
     },
     {
       name: 'Configure AWS credentials',
       uses: 'aws-actions/configure-aws-credentials@v6',
       with: {
         'role-to-assume': '${{ secrets.ACTIONS_ROLE_ARN }}',
-        'aws-region': '${{ vars.AWS_REGION }}'
-      }
+        'aws-region': '${{ vars.AWS_REGION }}',
+      },
     },
     {
       name: 'Deploy',
-      run: 'yarn cdk deploy --ci --require-approval never'
+      run: 'yarn cdk deploy --ci --require-approval never',
     },
   ],
 });
